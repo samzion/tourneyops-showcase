@@ -184,7 +184,7 @@ External Services:
 │  (Email)     │  │  Nominatim → Google Maps → Mapbox    │
 └──────────────┘  └──────────────────────────────────────┘
 ```
-
+![TourneyOps System Architecture](docs/architecture/system-overview.png)
 ---
 
 ## Domain Model
