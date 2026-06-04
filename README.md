@@ -184,6 +184,10 @@ External Services:
 │  (Email)     │  │  Nominatim → Google Maps → Mapbox    │
 └──────────────┘  └──────────────────────────────────────┘
 ```
+
+![TourneyOps System Architecture](docs/architecture/system-overview.svg)
+
+
 ---
 
 ## Domain Model
@@ -211,6 +215,9 @@ TournamentSeason ──< TournamentMatch ──< MatchEvent
 TournamentMatch >── Venue
 TournamentMatch >── Umpire
 ```
+
+### Domain Model
+![Domain Model](docs/architecture/domain-model.svg)
 
 **Key design decisions in the domain model:**
 
@@ -249,6 +256,9 @@ TournamentOrchestratorEngine (interface)
     ├── FixedMatchesWithByeRecoveryOrchestratorEngine
     └── GauntletStaircaseOrchestratorEngine
 ```
+### Tournament Format Engines
+![Format Engines](docs/architecture/format-engines.svg)
+
 
 ---
 
