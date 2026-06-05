@@ -6,7 +6,7 @@
 
 [![Status](https://img.shields.io/badge/Status-Live%20%26%20Active-brightgreen?style=flat-square)](https://tourneyops.com)
 [![Platform](https://img.shields.io/badge/Platform-Web-blue?style=flat-square)](https://tourneyops.com)
-[![Backend](https://img.shields.io/badge/Backend-Java%2017%20%7C%20Spring%20Boot%203.5-6DB33F?style=flat-square&logo=spring)](https://spring.io/projects/spring-boot)
+[![Backend](https://img.shields.io/badge/Backend-Java%20%7C%20Spring%20Boot-6DB33F?style=flat-square&logo=spring)](https://spring.io/projects/spring-boot)
 [![Database](https://img.shields.io/badge/Database-PostgreSQL-4169E1?style=flat-square&logo=postgresql)](https://www.postgresql.org/)
 [![Frontend](https://img.shields.io/badge/Frontend-Next.js-000000?style=flat-square&logo=nextdotjs)](https://nextjs.org/)
 [![Auth](https://img.shields.io/badge/Auth-JWT%20%7C%20Spring%20Security-orange?style=flat-square)](https://spring.io/projects/spring-security)
@@ -18,7 +18,7 @@
 
 **[tourneyops.com](https://tourneyops.com)** — currently in active iteration based on organiser feedback.
 
-> *This repository is a public engineering showcase. The source code is proprietary. All implementation details shared here represent high-level design decisions and are intended to demonstrate system design thinking, domain expertise, and engineering maturity.*
+> *This repository is a public showcase for a proprietary platform. Source code is private and will remain so. What is shared here reflects product thinking, engineering maturity, and system design capability — not internal implementation.*
 
 ---
 
@@ -29,11 +29,8 @@
 - [Who It Serves](#who-it-serves)
 - [Key Features](#key-features)
 - [System Architecture](#system-architecture)
-- [Domain Model](#domain-model)
-- [Tournament Format Engines](#tournament-format-engines)
-- [API Design](#api-design)
 - [Technology Stack](#technology-stack)
-- [Engineering Decisions](#engineering-decisions)
+- [Engineering Principles](#engineering-principles)
 - [Challenges & Lessons Learned](#challenges--lessons-learned)
 - [Business Impact](#business-impact)
 - [Roadmap](#roadmap)
@@ -50,11 +47,11 @@ Tournament organisers coordinate registrations through Google Forms. Bracket dra
 
 This creates three compounding problems:
 
-**Subjectivity** — draw decisions, scheduling choices, and eligibility calls are made by individuals, not enforced by rules. This creates disputes.
+**Subjectivity** — draw decisions, scheduling choices, and eligibility calls are made by individuals, not enforced by rules. This creates disputes and erodes trust in competition outcomes.
 
-**Fragmentation** — registration, scheduling, results, and standings live in different tools. Organisers spend more time coordinating than managing.
+**Fragmentation** — registration, scheduling, results, and standings live in different tools with no connection between them. Organisers spend more time coordinating than managing.
 
-**Invisibility** — players have no reliable way to see their own statistics, track their history across tournaments, or compare their performance over time.
+**Invisibility** — players have no reliable way to see their own statistics, track their performance history across tournaments, or compare themselves to others over time.
 
 TourneyOps was built to solve all three.
 
@@ -62,347 +59,170 @@ TourneyOps was built to solve all three.
 
 ## The Solution
 
-TourneyOps gives tournament organisers a single platform to manage the full competition lifecycle — from registration through to final standings — with every decision driven by pre-configured rules, not manual judgement.
+TourneyOps gives tournament organisers a single platform to manage the full competition lifecycle — from registration through to final standings — with every decision driven by pre-configured rules rather than manual judgement.
 
-At its core, TourneyOps is a **tournament orchestration engine**. It understands the operational logic of seven distinct competition formats and automates the decisions that previously required manual intervention: who plays whom, in what order, on which venue, with which umpire, and what happens when a match ends.
+The platform understands the operational logic of multiple competition formats and automates the decisions that previously required manual intervention: who plays whom, in what order, on which venue, with which official, and what happens when a match ends.
 
-The platform is designed to be **sport-agnostic by architecture**. Football and Table Tennis are live. The domain model was deliberately built to accommodate additional sports without requiring structural changes.
+**Sport-agnostic by design.** Football and Table Tennis are live. The architecture was deliberately built to support additional sports without structural changes to the platform.
+
+**Nigerian-owned and Nigerian-built.** TourneyOps is designed around how sports organisations in Nigeria and across Africa actually operate — not adapted from a Western product.
 
 ---
 
 ## Who It Serves
 
-TourneyOps is a multi-stakeholder platform. Six distinct user roles interact with the system, each with a different operational context:
+TourneyOps is a multi-stakeholder platform. Six distinct user types interact with the system, each with a different operational context:
 
-| Role | Primary Responsibility | Key Platform Interactions |
-|------|----------------------|--------------------------|
-| **Organiser** | Runs the tournament end-to-end | Creates seasons, configures formats, manages registration, publishes results |
-| **Player** | Participates as an individual | Registers for tournaments, views schedule, tracks statistics |
-| **Team** | Participates as a group | Manages roster, views fixtures, tracks standings |
-| **Coach** | Manages team preparation | Views team schedule, tracks squad statistics |
-| **Umpire** | Officiates matches | Receives assignments, submits match events and scores |
-| **Club** | Manages a sports organisation | Oversees multiple teams and participants |
+| Role | What they do on the platform |
+|------|------------------------------|
+| **Organiser** | Creates and manages tournaments end-to-end — configuration, registration, scheduling, results, standings |
+| **Player** | Registers for tournaments, views their schedule, tracks personal statistics across seasons |
+| **Team** | Manages squad roster and participation, views fixtures and standings |
+| **Coach** | Monitors team schedule and squad performance |
+| **Umpire** | Receives match assignments, submits match events and final scores |
+| **Club** | Oversees multiple teams and participants within a sports organisation |
 
-The permission model is **role-additive** — a single user account can hold multiple roles simultaneously, reflecting real-world scenarios where a coach also registers as a player, or a club administrator also organises tournaments.
+A single user account can hold multiple roles simultaneously — a coach who also plays, or a club administrator who also organises tournaments. The permission model reflects how real users actually operate.
 
 ---
 
 ## Key Features
 
 ### Tournament Management
-- Create and configure tournament seasons with flexible parameters: format, sport type, participation type (individual/team), registration rules, and scheduling constraints
-- Support for both **street (casual)** and **formal** competition structures
+- Create and configure competitions with flexible parameters: format, sport, participation type, registration rules, and scheduling constraints
+- Support for both street (casual) and formal competition structures
 - Open and close registration with configurable eligibility enforcement
-- Publish seasons and control visibility to participants
+- Publish competitions and control visibility to participants
 
-### Seven Tournament Format Engines
-The core differentiator. Each format has a dedicated orchestration engine that handles bracket generation, round progression, and edge cases specific to that format:
+### Multiple Competition Formats
+The platform supports seven distinct competition formats. Organisers select the format that fits their competition — the platform handles bracket generation, round progression, and edge cases automatically.
 
-| Format | Description |
-|--------|-------------|
-| **League** | Round-robin fixture generation with configurable points system and tiebreaker rules |
-| **Knockout** | Single-elimination bracket with seeding support and bye handling |
-| **Group-to-Knockout** | Group stage feeding into knockout rounds with configurable qualification criteria |
-| **Challenger Rotation** | Rotating challenger system for continuous play formats |
-| **Double Elimination** | Winner and loser bracket management with correct finals routing |
-| **Fixed Matches with Bye Recovery** | Pre-determined fixture list with automatic bye recovery when participants are missing |
-| **Gauntlet Staircase** | Progressive difficulty format with configurable advancement rules |
+Supported formats: League, Knockout, Group-to-Knockout, Challenger Rotation, Double Elimination, Fixed Matches with Bye Recovery, and Gauntlet Staircase.
 
 ### Match Operations
-- Automated fixture generation per format rules
-- Conflict-aware scheduling: validates venue availability, umpire assignments, and participant eligibility simultaneously
-- Match lifecycle management: `SCHEDULED → IN_PROGRESS → COMPLETED`
-- Match stoppage and resumption with timestamp tracking
-- Sport-specific event recording (goals, assists, cards, points, sets)
+- Automated fixture generation based on the selected competition format
+- Conflict-aware scheduling that validates all resource constraints before any match is published
+- Full match lifecycle management from scheduling through to completion
+- Sport-specific event recording for each supported sport
 
 ### Participant & Team Management
-- Player profiles with sport-specific technical attributes stored as flexible JSONB (positions, play styles, grip types, racket specifications)
-- Biological attribute tracking: height, weight, hand/foot dominance, blood type
-- Team roster management with join requests, invitation flows, and role assignments
-- Coach and umpire profiles with certification tracking
+- Rich player profiles with sport-specific technical attributes
+- Team roster management with join requests and invitation flows
+- Coach and umpire profiles with certification and assignment tracking
 
-### Venue & Umpire Management
-- Venue registration with GPS coordinates
-- Multi-provider geocoding for venue discovery (Nominatim, Google Maps, Mapbox) with automatic provider fallback
-- Umpire certification level tracking and match assignment
+### Venue Management
+- Venue registration with location coordinates
+- Location-based venue discovery with automatic provider fallback
+- Venue availability management and scheduling conflict detection
 
 ### Notifications
-- Async email and in-app notifications via event-driven architecture
-- Notification triggers: registration confirmation, match scheduling, score updates, season events
-- Severity-based notification levels
-- Notification logic fully decoupled from core business operations
+- Async email and in-app notifications triggered by platform events
+- Notification delivery is independent from core business operations — service issues do not affect tournament management
 
 ### Statistics & Analytics
-- Tournament standings updated in real time as results are submitted
-- Cross-season player statistics: cumulative performance across multiple tournament cycles
-- Head-to-head comparison between participants
-- Combined stage standings for multi-phase competitions
+- Live standings updated automatically as results are submitted
+- Player performance tracked across multiple tournament seasons
+- Head-to-head comparisons and multi-phase competition standings
 
 ---
 
 ## System Architecture
 
-TourneyOps is structured as a **modular monolith** — a single deployable unit internally organized into self-contained domain modules, each with its own entities, repositories, services, and controllers. This was a deliberate architectural choice over microservices at this stage, prioritising deployment simplicity and development velocity without sacrificing internal modularity.
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     Next.js Frontend                        │
-│           Dashboard · Fixtures · Registrations              │
-│              Standings · Statistics · Admin                 │
-└──────────────────────────┬──────────────────────────────────┘
-                           │ HTTPS / REST API
-┌──────────────────────────▼──────────────────────────────────┐
-│                  Spring Boot Backend                        │
-│                                                             │
-│  ┌─────────────┐  ┌──────────────┐  ┌──────────────────┐   │
-│  │ Auth Module │  │ Season Module│  │  Match Module    │   │
-│  │ JWT / BCrypt│  │ Registration │  │  Orchestration   │   │
-│  └─────────────┘  │ Eligibility  │  │  Score Tracking  │   │
-│                   └──────────────┘  └──────────────────┘   │
-│  ┌─────────────┐  ┌──────────────┐  ┌──────────────────┐   │
-│  │  Participant│  │  Venue &     │  │  Notification    │   │
-│  │  Team Module│  │  Umpire Mgmt │  │  Engine (Async)  │   │
-│  └─────────────┘  └──────────────┘  └──────────────────┘   │
-│  ┌─────────────┐  ┌──────────────┐  ┌──────────────────┐   │
-│  │  Statistics │  │  Geocoding   │  │  Format Engines  │   │
-│  │  Dashboard  │  │  (Fallback)  │  │  × 7 formats     │   │
-│  └─────────────┘  └──────────────┘  └──────────────────┘   │
-│                                                             │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │          Global Exception Handler (AOP)              │   │
-│  └─────────────────────────────────────────────────────┘   │
-└──────────────────────────┬──────────────────────────────────┘
-                           │ JPA / Liquibase
-┌──────────────────────────▼──────────────────────────────────┐
-│                     PostgreSQL                              │
-│         35+ tables · JSONB columns · 35+ migrations        │
-└─────────────────────────────────────────────────────────────┘
-
-External Services:
-┌──────────────┐  ┌──────────────────────────────────────┐
-│  Zepto Mail  │  │  Geocoding Providers (with fallback)  │
-│  (Email)     │  │  Nominatim → Google Maps → Mapbox    │
-└──────────────┘  └──────────────────────────────────────┘
-```
+TourneyOps is built as a modular, production-grade platform — a single deployable unit designed for operational reliability, with clean separation between the web application, backend platform, and data layer.
 
 ![TourneyOps System Architecture](docs/architecture/system-overview.svg)
 
+The diagram above shows what the system connects to and how it is deployed. Internal architecture is proprietary and not published here.
 
----
+**Key architectural characteristics:**
 
-## Domain Model
-
-The domain model reflects the real operational complexity of sports tournament management. Key design decisions:
-
-**Entities (35+ total):**
-
-```
-User ──< UserRole >── Role
-User ──< Player
-User ──< Coach
-User ──< Umpire
-User ──< Club
-User ──< Organiser
-
-Player ──< PlayerSport (JSONB attributes per sport)
-
-Club ──< Team ──< TeamMember
-
-TournamentSeason ──< TournamentParticipant
-TournamentSeason ──< TournamentStage ──< TournamentGroup
-TournamentSeason ──< TournamentMatch ──< MatchEvent
-
-TournamentMatch >── Venue
-TournamentMatch >── Umpire
-```
-
-### Domain Model
-![Domain Model](docs/architecture/domain-model.svg)
-
-**Key design decisions in the domain model:**
-
-**JSONB for sport-specific attributes** — Different sports have fundamentally different player profiles. A football player has positions and play styles. A table tennis player has grip types and racket specifications. Rather than creating sport-specific tables that would require schema changes for every new sport, sport attributes are stored as validated JSONB, keeping the model extensible while maintaining queryability.
-
-**Role-additive user model** — A single user account can hold multiple roles simultaneously. This reflects real-world usage (a coach who also plays, a club admin who also organises) and avoids duplicate user records.
-
-**Stage and group abstraction** — Tournament stages (group phase, knockout phase, etc.) and groups within stages are first-class entities, enabling the system to correctly model multi-phase competitions with different rules at each phase.
-
----
-
-## Tournament Format Engines
-
-The orchestration layer is the most technically complex part of the system. Each of the seven format engines implements a common interface but handles substantially different domain logic.
-
-The challenge is not simply generating fixtures. It is handling progression:
-- Which participants advance to the next round?
-- What happens when a participant has a bye?
-- How are tiebreakers resolved within a group?
-- How does a double elimination loser bracket merge back into the winner bracket for the final?
-
-Each engine is responsible for:
-1. Validating that the tournament configuration is valid for that format
-2. Generating the initial fixture set
-3. Advancing participants to subsequent rounds based on results
-4. Handling edge cases (byes, walkovers, disqualifications)
-5. Determining when the competition is complete and who won
-
-```
-TournamentOrchestratorEngine (interface)
-    ├── LeagueOrchestratorEngine
-    ├── KnockoutOrchestratorEngine
-    ├── GroupToKnockoutOrchestratorEngine
-    ├── ChallengerRotationOrchestratorEngine
-    ├── DoubleEliminationOrchestratorEngine
-    ├── FixedMatchesWithByeRecoveryOrchestratorEngine
-    └── GauntletStaircaseOrchestratorEngine
-```
-### Tournament Format Engines
-![Format Engines](docs/architecture/format-engines.svg)
-
-
----
-
-## API Design
-
-The API follows REST conventions with a consistent response envelope across all endpoints.
-
-**Base URL:** `https://api.tourneyops.com/api/v1`
-
-**Response envelope:**
-```json
-{
-  "success": true,
-  "message": "Season retrieved successfully",
-  "data": { ... },
-  "errors": null,
-  "timestamp": "2026-06-03T10:30:00Z"
-}
-```
-
-**Authentication:** JWT Bearer token. Stateless. Tokens include role claims for server-side authorization.
-
-**API Modules (122 endpoints across 21 controllers):**
-
-| Module | Base Path | Key Operations |
-|--------|-----------|----------------|
-| Authentication | `/auth` | Register, login, email verification, password reset |
-| Tournament Seasons | `/tournament-seasons` | CRUD, open/close registration, publish |
-| Orchestration | `/tournament-orchestrator` | Generate fixtures, advance rounds |
-| Matches | `/tournament-matches` | Schedule, record events, complete |
-| Participants | `/tournament-participants` | Register, manage eligibility |
-| Players | `/players` | Profile management, sport specializations |
-| Teams | `/teams` | Create, manage roster, join requests |
-| Team Members | `/team-members` | Add, remove, assign roles |
-| Umpires | `/umpires` | Profiles, certifications, assignment |
-| Venues | `/venues` | Register, geocode, availability |
-| Series | `/series` | Multi-season series management |
-| Divisions | `/divisions` | Division configuration within seasons |
-| Notifications | `/notifications` | Fetch, mark read, preferences |
-| Dashboard | `/dashboard` | Aggregated stats per role |
-| Cross-Season Stats | `/cross-season-stats` | Historical analytics |
+- Stateless JWT-based authentication with role-based access control
+- Event-driven async processing — notifications and side effects run independently from core business operations
+- Multi-provider external service integration with automatic fallback
+- Versioned, auditable schema migrations — no auto-generated DDL in production
+- Containerised deployment with environment-variable-driven configuration following 12-factor principles
 
 ---
 
 ## Technology Stack
 
-### Backend
-| Layer | Technology | Version | Rationale |
-|-------|-----------|---------|-----------|
-| Language | Java | 17 | LTS release; strong typing; enterprise ecosystem |
-| Framework | Spring Boot | 3.5.6 | Production-grade; mature ecosystem; Spring Security integration |
-| Security | Spring Security + JJWT | 0.12.6 | Stateless JWT auth; BCrypt password hashing |
-| ORM | Spring Data JPA / Hibernate | Latest | Clean repository pattern; native query support where needed |
-| Database Migrations | Liquibase | 4.27.0 | Versioned, auditable schema changes; safe across environments |
-| Build | Maven | 3.x | Standard Java build tooling |
-| Containerization | Docker | Multi-stage | Consistent deployment; environment isolation |
-| Email | Zepto Mail API | v1.1 | Transactional email delivery |
-| Geocoding | Nominatim / Google Maps / Mapbox | — | Multi-provider with fallback strategy |
+![Technology Stack](docs/architecture/tech-stack.svg)
 
-### Database
-| Component | Technology | Notes |
-|-----------|-----------|-------|
-| Primary Store | PostgreSQL | 15+; JSONB for flexible sport attributes; strong ACID guarantees |
-| Schema Management | Liquibase | 35+ migrations; versioned; environment-safe |
-| Query Approach | JPA + native queries | ORM for standard operations; native SQL for complex analytics |
-
-### Frontend
-| Component | Technology | Notes |
-|-----------|-----------|-------|
-| Framework | Next.js 14 | SSR for performance; React ecosystem |
-| State Management | React state / Context | Proportional to complexity |
-| HTTP Client | Axios | Interceptors for auth token injection |
+| Layer | Technology |
+|-------|-----------|
+| Backend | Java · Spring Boot · Spring Security · Hibernate/JPA · Maven |
+| Database | PostgreSQL · Liquibase |
+| Frontend | Next.js · React |
+| Auth | JWT · BCrypt |
+| Deployment | Docker |
+| Email | Zepto Mail |
+| Location | Multi-provider geocoding |
 
 ---
 
-## Engineering Decisions
+## Engineering Principles
 
-**Why a modular monolith over microservices?**
+These are the principles that shaped how TourneyOps was built. Not a description of internal implementation — but the reasoning that guided every significant decision.
 
-At current scale, the operational overhead of microservices (distributed tracing, service discovery, network latency between services, complex deployment pipelines) would exceed the benefits. The modular monolith gives us clean internal boundaries today with a clear migration path to services later if specific modules (e.g. notifications, statistics) need independent scaling.
+**Domain first, code second.**
+The most expensive mistakes in any system are structural. Significant time was invested in understanding the real operational domain before any code was written. The domain model went through multiple iterations before the first migration was created.
 
-**Why JSONB for sport-specific player attributes?**
+**Model the real world, not the idealised version.**
+Real users are not cleanly one thing. A coach also plays. A club administrator also organises. The permission model was built to reflect this from the beginning.
 
-The alternative — a separate table per sport — would require a schema migration every time a new sport is added. JSONB keeps the model extensible while remaining queryable. Validation of sport-specific fields happens at the service layer, not the database constraint level, which is an acceptable trade-off for the flexibility gained.
+**Reliability over cleverness.**
+Where there was a choice between a clever solution and a correct one, we chose correct. Scheduling, state management, and data migrations all prioritise correctness and auditability over elegance.
 
-**Why Liquibase over Hibernate DDL auto?**
+**Production systems require pragmatic judgment.**
+Software is not finished when it compiles — it is finished when it handles the cases that emerge when real people use it under real conditions. Launching into a live environment with real organiers running real competitions shaped every architectural decision.
 
-`spring.jpa.hibernate.ddl-auto=update` is a liability in any production system — it can silently drop columns, misinterpret renames, and behaves differently across database versions. Every schema change in TourneyOps is a versioned, reviewable Liquibase changeset that can be safely replayed across dev, staging, and production.
-
-**Why event-driven notifications?**
-
-Coupling notification logic to business transactions would make the core domain logic harder to test, slower to execute, and brittle to email service outages. Spring application events let notification triggers fire after a transaction commits, run asynchronously, and fail independently of the business operation that triggered them.
-
-**Why multi-provider geocoding?**
-
-A single geocoding provider creates a single point of failure for venue discovery. The fallback chain (Nominatim → Google Maps → Mapbox) ensures the feature remains operational even if one provider is unavailable or rate-limited, with no user-visible degradation.
+**Separation of concerns at every level.**
+Business logic, side effects, and infrastructure concerns are deliberately separated. A failure in an external service does not affect a core business operation.
 
 ---
 
 ## Challenges & Lessons Learned
 
-### 1. Domain complexity precedes code complexity
+### Domain complexity precedes code complexity
 
-The hardest part of building TourneyOps was not writing the code — it was understanding the domain well enough to model it correctly before writing anything. Tournament management has subtleties that only become apparent when you talk to real organisers: the difference between a bye and a walkover, how tiebreakers cascade through group stages, what happens when an umpire cancels on match day.
+The hardest part of building TourneyOps was not writing the code — it was understanding the domain well enough to model it correctly. Tournament management has subtleties that only become visible when you work closely with real organisers: edge cases in bracket progression, tiebreaker cascades, what happens when an official cancels on match day.
 
-**Lesson:** Time spent on domain modeling before implementation is not delay — it is the work. A wrong entity relationship discovered at migration 35 is far more expensive than one discovered before migration 1.
+**Lesson:** Time spent on domain modelling before implementation is not delay — it is the work. A wrong structural decision found late is far more expensive than one caught before the first line of code.
 
-### 2. Production is a different environment
+### Scheduling is a constraint satisfaction problem
 
-Early in the platform's operation, a critical user flow was needed for a live tournament before the code had been written. The decision was made to make a targeted, documented database change directly to keep the competition running, then implement the proper code flow with full edge case coverage afterwards.
+The conflict-aware scheduling system went through several iterations. An early approach that checked resource availability sequentially had race conditions under concurrent requests. The correct solution required all constraint validation to happen within a single atomic operation.
 
-**Lesson:** Production systems require pragmatic engineering judgment — knowing when a controlled manual intervention is correct, and always closing the loop with the proper implementation. The key is documentation and follow-through.
+**Lesson:** Concurrent write scenarios in scheduling systems require careful transaction design from the start. This is not something that can be retrofitted cleanly.
 
-### 3. Scheduling conflicts are a constraint satisfaction problem
+### Role-additive models pay off late
 
-The conflict-aware scheduling system went through multiple iterations. The initial approach — checking venue, umpire, and participant availability as separate sequential queries — had race conditions under concurrent requests. The correct approach was to handle all constraint validation within a single transaction boundary.
+An early design assumed users would hold a single role. This assumption was wrong — real users hold multiple roles simultaneously. The refactor was disruptive mid-development but correct, and would have been far more expensive discovered after deployment.
 
-**Lesson:** Concurrent write scenarios in booking/scheduling systems require careful transaction design. Optimistic locking and transaction-scoped constraint checks are not optional.
+**Lesson:** Model the real world from the beginning. Assumptions about user behaviour that seem safe early become expensive constraints later.
 
-### 4. The role-additive user model saved significant re-work
+### Production iteration is part of the build
 
-An early design had separate user tables per role (PlayerUser, CoachUser, etc.). This was refactored to a single User entity with a role junction table after it became clear that real users frequently hold multiple roles. The refactor was painful mid-development but correct.
+Launching with real organisers running real competitions created pressure that no amount of planning fully prepares for. Requirements emerged that were only visible once real people used the system under real conditions.
 
-**Lesson:** Model the real world, not the idealized version. Users are not always cleanly one thing.
+**Lesson:** The gap between a working system and a production system is where most of the real engineering happens.
 
 ---
 
 ## Business Impact
 
-TourneyOps addresses a real operational problem in an underserved market. The value proposition is measurable:
-
 **For organisers:**
-- Bracket draws that previously took 2–3 hours of manual work now take minutes
-- Scheduling conflicts identified before matches are published rather than on match day
-- Results and standings published automatically, eliminating manual spreadsheet updates
+- Bracket draws that previously took hours of manual work now take minutes
+- Scheduling conflicts identified automatically before they reach participants
+- Results and standings updated in real time — no manual spreadsheet maintenance
 
 **For participants:**
-- Single source of truth for fixtures, results, and standings
-- Performance statistics tracked across multiple tournament seasons
-- Match notifications without relying on organiser WhatsApp broadcasts
+- Single source of truth for all competition information
+- Performance statistics tracked automatically across multiple seasons
+- Match communications without relying on organiser WhatsApp broadcasts
 
 **Market context:**
-- Sports tournament management software exists for Western markets but almost none of it is designed for, priced for, or hosted in the African market
-- TourneyOps is Nigerian-owned, Nigerian-hosted, and designed around how Nigerian sports organisations actually operate
+Sports tournament management software exists for Western markets. Almost none of it is designed for, priced for, or hosted in the African market. TourneyOps is built around how Nigerian and African sports organisations actually operate.
 
 **Current traction:**
 - 100+ registered users
@@ -415,79 +235,50 @@ TourneyOps addresses a real operational problem in an underserved market. The va
 
 ## Roadmap
 
-### Near-term (active development)
-- [ ] Additional sports: Basketball, Badminton, Volleyball
+### Near-term
+- [ ] Additional sports — Basketball, Badminton, Volleyball
 - [ ] Mobile-responsive UX improvements based on current organiser feedback
-- [ ] Advanced statistics: player ratings, performance trends
-- [ ] Tournament discovery and public registration pages
+- [ ] Advanced statistics — player ratings and performance trends
+- [ ] Public tournament discovery and registration pages
 
 ### Medium-term
 - [ ] Mobile application (iOS + Android)
-- [ ] Organiser billing and subscription management
-- [ ] Live match scoring interface for umpires
-- [ ] Spectator-facing live standings and fixture tracker
+- [ ] Organiser subscription and billing management
+- [ ] Live match scoring interface for officials
+- [ ] Spectator-facing live standings and fixtures
 
 ### Long-term
 - [ ] Multi-country expansion beyond Nigeria
-- [ ] API access for third-party integration (sports media, betting, broadcast)
-- [ ] Talent identification: data-driven player profiles for scouts and academies
+- [ ] Third-party API access for sports media and broadcast integration
+- [ ] Talent identification — data-driven player profiles for scouts and academies
 
 ---
 
 ## Screenshots
 
-> *Screenshots coming — the sections below describe what to expect.*
-
 | Screen | Description |
 |--------|-------------|
-| **Organiser Dashboard** | Overview of active seasons, upcoming matches, registration counts, and platform activity |
-| **Season Setup** | Format selection, date configuration, eligibility rules, sport selection |
-| **Fixture View** | Generated bracket or round-robin grid with match dates, venues, and umpire assignments |
-| **Match Detail** | Live event recording interface — goals, cards, points — with running score |
-| **Standings Table** | Real-time standings with points, goal difference, head-to-head tiebreakers |
-| **Player Profile** | Sport-specific attributes, match history, cross-season statistics |
-| **Registration Flow** | Player/team registration with eligibility validation |
+| **Organiser Dashboard** | Overview of active competitions, upcoming matches, registration activity |
+| **Competition Setup** | Format selection, configuration, eligibility rules |
+| **Fixture View** | Generated bracket or schedule with match details |
+| **Match Detail** | Event recording and live score tracking |
+| **Standings** | Real-time standings table |
+| **Player Profile** | Sport attributes and cross-season statistics |
 
----
-
-## Repository Structure
-
-```
-tourneyops-showcase/
-│
-├── README.md                          ← This file
-├── docs/
-│   ├── architecture/
-│   │   ├── system-overview.png        ← High-level architecture diagram
-│   │   ├── domain-model.png           ← Entity relationship overview
-│   │   └── format-engines.png        ← Tournament engine hierarchy
-│   ├── api/
-│   │   └── api-overview.md           ← API modules and endpoint summary
-│   ├── design/
-│   │   ├── scheduling-logic.md       ← Conflict detection design
-│   │   └── notification-architecture.md ← Event-driven notification design
-│   └── decisions/
-│       └── adr-001-modular-monolith.md ← Architecture Decision Record
-│
-└── screenshots/
-    ├── dashboard.png
-    ├── fixture-view.png
-    ├── match-scoring.png
-    └── standings.png
-```
+*See the live platform at [tourneyops.com](https://tourneyops.com)*
 
 ---
 
 ## Contact
 
-**Samson Kayode** — Software Engineer & Co-Founder, TourneyOps
+**Samson Kayode** — Software Engineer & Co-Founder
 
 - **Email:** kayodesamson4@gmail.com
 - **LinkedIn:** [linkedin.com/in/kayodesamson](https://linkedin.com/in/kayodesamson)
 - **GitHub:** [github.com/samzion](https://github.com/samzion)
 - **Platform:** [tourneyops.com](https://tourneyops.com)
 
-Open to backend engineering roles, technical co-founder conversations, and product partnerships. Available immediately.
+Open to backend engineering roles, technical co-founder conversations, and product partnerships.
 
 ---
 
