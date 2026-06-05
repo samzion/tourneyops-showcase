@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" viewBox="0 0 900 200" style="background:#ffffff;font-family:Arial,sans-serif;">
+
+  <text x="450" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#1F3A6E">TourneyOps — Technology Stack</text>
+
+  <!-- Row 1: Backend -->
+  <text x="30" y="58" font-size="10" fill="#aaa" font-style="italic">Backend</text>
+
+  <rect x="30"  y="66" width="100" height="32" rx="6" fill="#EEF2F8" stroke="#1F3A6E" stroke-width="1"/>
+  <text x="80"  y="87" text-anchor="middle" font-size="11" font-weight="600" fill="#1F3A6E">Java</text>
+
+  <rect x="140" y="66" width="130" height="32" rx="6" fill="#EEF2F8" stroke="#1F3A6E" stroke-width="1"/>
+  <text x="205" y="87" text-anchor="middle" font-size="11" font-weight="600" fill="#1F3A6E">Spring Boot</text>
+
+  <rect x="280" y="66" width="150" height="32" rx="6" fill="#EEF2F8" stroke="#1F3A6E" stroke-width="1"/>
+  <text x="355" y="87" text-anchor="middle" font-size="11" font-weight="600" fill="#1F3A6E">Spring Security · JWT</text>
+
+  <rect x="440" y="66" width="150" height="32" rx="6" fill="#EEF2F8" stroke="#1F3A6E" stroke-width="1"/>
+  <text x="515" y="87" text-anchor="middle" font-size="11" font-weight="600" fill="#1F3A6E">Spring Data JPA</text>
+
+  <rect x="600" y="66" width="120" height="32" rx="6" fill="#EEF2F8" stroke="#1F3A6E" stroke-width="1"/>
+  <text x="660" y="87" text-anchor="middle" font-size="11" font-weight="600" fill="#1F3A6E">Hibernate</text>
+
+  <rect x="730" y="66" width="140" height="32" rx="6" fill="#EEF2F8" stroke="#1F3A6E" stroke-width="1"/>
+  <text x="800" y="87" text-anchor="middle" font-size="11" font-weight="600" fill="#1F3A6E">Maven · Docker</text>
+
+  <!-- Row 2: Database + Frontend -->
+  <text x="30" y="118" font-size="10" fill="#aaa" font-style="italic">Database</text>
+  <text x="350" y="118" font-size="10" fill="#aaa" font-style="italic">Frontend</text>
+  <text x="570" y="118" font-size="10" fill="#aaa" font-style="italic">Services</text>
+
+  <rect x="30"  y="126" width="120" height="32" rx="6" fill="#EDE7F6" stroke="#4A0E8F" stroke-width="1"/>
+  <text x="90"  y="147" text-anchor="middle" font-size="11" font-weight="600" fill="#4A0E8F">PostgreSQL</text>
+
+  <rect x="160" y="126" width="110" height="32" rx="6" fill="#EDE7F6" stroke="#4A0E8F" stroke-width="1"/>
+  <text x="215" y="147" text-anchor="middle" font-size="11" font-weight="600" fill="#4A0E8F">Liquibase</text>
+
+  <rect x="280" y="126" width="60" height="32" rx="6" fill="#EDE7F6" stroke="#4A0E8F" stroke-width="1"/>
+  <text x="310" y="147" text-anchor="middle" font-size="11" font-weight="600" fill="#4A0E8F">JSONB</text>
+
+  <rect x="350" y="126" width="110" height="32" rx="6" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1"/>
+  <text x="405" y="147" text-anchor="middle" font-size="11" font-weight="600" fill="#1B5E20">Next.js</text>
+
+  <rect x="470" y="126" width="90" height="32" rx="6" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1"/>
+  <text x="515" y="147" text-anchor="middle" font-size="11" font-weight="600" fill="#1B5E20">React</text>
+
+  <rect x="570" y="126" width="130" height="32" rx="6" fill="#FFF3E0" stroke="#E65100" stroke-width="1"/>
+  <text x="635" y="147" text-anchor="middle" font-size="11" font-weight="600" fill="#BF360C">Zepto Mail</text>
+
+  <rect x="710" y="126" width="160" height="32" rx="6" fill="#FFF3E0" stroke="#E65100" stroke-width="1"/>
+  <text x="790" y="147" text-anchor="middle" font-size="11" font-weight="600" fill="#BF360C">Multi-provider Geo</text>
+
+  <!-- Bottom note -->
+  <text x="450" y="190" text-anchor="middle" font-size="10" fill="#bbb" font-style="italic">Production-deployed · RESTful API · Event-driven · JWT Auth · Versioned schema migrations</text>
+
+</svg>

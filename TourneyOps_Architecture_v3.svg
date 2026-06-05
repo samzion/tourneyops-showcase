@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" viewBox="0 0 900 560" style="background:#ffffff;font-family:Arial,sans-serif;">
+
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arrgray" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#aaa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- ── TITLE ───────────────────────────────────────────────────── -->
+  <text x="450" y="30" text-anchor="middle" font-size="17" font-weight="700" fill="#1F3A6E">TourneyOps — System Architecture</text>
+  <text x="450" y="50" text-anchor="middle" font-size="11" fill="#bbb" font-style="italic">High-level overview · Source code is proprietary</text>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- STAKEHOLDERS ROW -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <text x="450" y="80" text-anchor="middle" font-size="10" fill="#aaa" font-style="italic">Six stakeholder types interact with the platform</text>
+
+  <rect x="30"  y="88" width="118" height="32" rx="16" fill="#EEF2F8" stroke="#1F3A6E" stroke-width="1"/>
+  <text x="89"  y="109" text-anchor="middle" font-size="11" font-weight="600" fill="#1F3A6E">Organiser</text>
+
+  <rect x="162" y="88" width="118" height="32" rx="16" fill="#EEF2F8" stroke="#1F3A6E" stroke-width="1"/>
+  <text x="221" y="109" text-anchor="middle" font-size="11" font-weight="600" fill="#1F3A6E">Player</text>
+
+  <rect x="294" y="88" width="118" height="32" rx="16" fill="#EEF2F8" stroke="#1F3A6E" stroke-width="1"/>
+  <text x="353" y="109" text-anchor="middle" font-size="11" font-weight="600" fill="#1F3A6E">Team</text>
+
+  <rect x="426" y="88" width="118" height="32" rx="16" fill="#EEF2F8" stroke="#1F3A6E" stroke-width="1"/>
+  <text x="485" y="109" text-anchor="middle" font-size="11" font-weight="600" fill="#1F3A6E">Coach</text>
+
+  <rect x="558" y="88" width="118" height="32" rx="16" fill="#EEF2F8" stroke="#1F3A6E" stroke-width="1"/>
+  <text x="617" y="109" text-anchor="middle" font-size="11" font-weight="600" fill="#1F3A6E">Umpire</text>
+
+  <rect x="690" y="88" width="118" height="32" rx="16" fill="#EEF2F8" stroke="#1F3A6E" stroke-width="1"/>
+  <text x="749" y="109" text-anchor="middle" font-size="11" font-weight="600" fill="#1F3A6E">Club</text>
+
+  <!-- Stakeholders → Frontend -->
+  <line x1="450" y1="120" x2="450" y2="148" stroke="#bbb" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arrgray)"/>
+  <text x="464" y="137" font-size="9" fill="#bbb">HTTPS</text>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- FRONTEND -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <rect x="220" y="148" width="460" height="58" rx="12" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1.5"/>
+  <text x="450" y="172" text-anchor="middle" font-size="14" font-weight="700" fill="#1B5E20">Web Application</text>
+  <text x="450" y="191" text-anchor="middle" font-size="11" fill="#388E3C">Next.js · React</text>
+
+  <!-- Frontend → Backend -->
+  <line x1="450" y1="206" x2="450" y2="242" stroke="#1F3A6E" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="464" y="227" font-size="9" fill="#1F3A6E">REST API · HTTPS · JWT</text>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- BACKEND — single opaque box, no internals shown -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+
+  <!-- Docker dashed boundary -->
+  <rect x="60" y="242" width="780" height="126" rx="14" fill="none" stroke="#2496ED" stroke-width="1" stroke-dasharray="6 4"/>
+  <text x="84" y="258" font-size="9" fill="#2496ED" font-style="italic">Docker · containerised deployment</text>
+
+  <!-- Backend solid box — intentionally opaque -->
+  <rect x="78" y="264" width="744" height="90" rx="10" fill="#F0F4FF" stroke="#1F3A6E" stroke-width="2"/>
+  <text x="450" y="291" text-anchor="middle" font-size="15" font-weight="700" fill="#1F3A6E">Backend Platform</text>
+  <text x="450" y="312" text-anchor="middle" font-size="11" fill="#555">Java · Spring Boot · Spring Security · Hibernate/JPA · Maven</text>
+  <text x="450" y="330" text-anchor="middle" font-size="10" fill="#888" font-style="italic">Internal architecture is proprietary</text>
+  <text x="450" y="346" text-anchor="middle" font-size="10" fill="#888" font-style="italic">Production · RESTful API · Event-driven · Role-based access control</text>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- BACKEND → DATABASE -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <line x1="450" y1="368" x2="450" y2="404" stroke="#4A0E8F" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="464" y="389" font-size="9" fill="#4A0E8F">JPA · Liquibase migrations</text>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- DATABASE -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <rect x="260" y="404" width="380" height="56" rx="12" fill="#EDE7F6" stroke="#4A0E8F" stroke-width="1.5"/>
+  <text x="450" y="426" text-anchor="middle" font-size="14" font-weight="700" fill="#4A0E8F">PostgreSQL</text>
+  <text x="450" y="446" text-anchor="middle" font-size="11" fill="#6A3AB2">Relational · JSONB · Versioned schema migrations</text>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- EXTERNAL SERVICES -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+
+  <!-- Email — bottom left -->
+  <rect x="60" y="404" width="178" height="56" rx="12" fill="#FFF3E0" stroke="#E65100" stroke-width="1.5"/>
+  <text x="149" y="426" text-anchor="middle" font-size="13" font-weight="700" fill="#BF360C">Email</text>
+  <text x="149" y="446" text-anchor="middle" font-size="10" fill="#E65100">Transactional notifications</text>
+
+  <!-- Location — bottom right -->
+  <rect x="662" y="404" width="178" height="56" rx="12" fill="#FFF3E0" stroke="#E65100" stroke-width="1.5"/>
+  <text x="751" y="426" text-anchor="middle" font-size="13" font-weight="700" fill="#BF360C">Location Services</text>
+  <text x="751" y="446" text-anchor="middle" font-size="10" fill="#E65100">Geocoding · multi-provider</text>
+
+  <!-- Backend → Email -->
+  <path d="M160 368 L149 404" fill="none" stroke="#E65100" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#arrgray)"/>
+  <text x="118" y="390" font-size="9" fill="#E65100">async</text>
+
+  <!-- Backend → Location -->
+  <path d="M740 368 L751 404" fill="none" stroke="#E65100" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#arrgray)"/>
+  <text x="752" y="390" font-size="9" fill="#E65100">on demand</text>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- LEGEND -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <rect x="60" y="492" width="780" height="52" rx="8" fill="none" stroke="#eee" stroke-width="1"/>
+
+  <text x="450" y="512" text-anchor="middle" font-size="10" font-weight="600" fill="#555">What this diagram intentionally omits</text>
+  <text x="450" y="532" text-anchor="middle" font-size="10" fill="#999" font-style="italic">Internal module structure · entity relationships · API paths · class names · design patterns · version numbers</text>
+  <text x="450" y="548" text-anchor="middle" font-size="10" fill="#bbb" font-style="italic">For engineering depth, see the Engineering Decisions section in the README or reach out directly.</text>
+
+</svg>
